@@ -7,40 +7,29 @@ class ApplicationController < ActionController::Base
   private
 
   def set_event_info
-    # I don't use params, because GitHub uses am "action" param
-    # that rails overwrites
+    puts request.headers["X-Github-Event"]
+    puts JSON.parse(request.body.read)
+    return
+
+
     @payload = JSON.parse(request.body.read)
     @repository = Repository.from_github(@payload["repository"])
     @sender = GithubUser.from_github(@payload["sender"])
-
-    prepare_event
-
-    # don't continue without pull request
-    head :ok unless @pull_request
+    @event = event_name
   end
 
-  def prepare_event
+  def event_name
     case request.headers["X-Github-Event"]
-    when "pull_request"; prepare_pull_request
-    when "issue_comment"; prepare_issue_comment
+    when "pull_request"
+      case @payload["action"]
+      when "opened";  :pull_request_opened
+      when "closed";  :pull_request_closed
+      end
+    when "issue_comment"
+      case @payload["action"]
+      when "created"; :pull_request_comment
+      end
     end
-  end
-
-  def prepare_pull_request
-    case @payload["action"]
-    when "opened"
-      @pull_request = @sender.open_pull_request(@payload["pull_request"], @repository)
-      @event = :pull_request_opened
-    when "closed"
-      @pull_request = PullRequest.find_by(url: @payload["pull_request"]["html_url"])
-      @event = :pull_request_closed
-    end
-  end
-
-  def prepare_issue_comment
-    @pull_request = PullRequest.find_by!(url: @payload["issue"]["pull_request"]["html_url"])
-    @comment = Comment.new(@payload["comment"])
-    @event = :pull_request_comment
   end
 
   def verify_signature

@@ -11,4 +11,8 @@ class PullRequest  < ActiveRecord::Base
   def parse_body
     @parsed_body = Values::Body.new(body)
   end
+
+  def close
+    update_attribute(:status, :closed)
+  end
 end

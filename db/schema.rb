@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 20150120174813) do
   end
 
   create_table "repositories", force: :cascade do |t|
-    t.integer  "github_id",  limit: 4,   null: false
     t.string   "name",       limit: 255, null: false
     t.string   "url",        limit: 255, null: false
     t.datetime "created_at",             null: false
