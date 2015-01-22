@@ -1,0 +1,30 @@
+class Comment
+  POSITIVE_EMOTICONS = %w':+1: :santa:'
+  NEGATIVE_EMOTICONS = %w':-1:'
+
+  attr_reader :commenter, :body
+
+  def initialize(params)
+    @commenter = GithubUser.from_github(params[:user])
+    @parsed_body = Values::Body.new(params[:body])
+  end
+
+  def score
+    s = 0
+    # last emoticon wins
+    @parsed_body.emoticons.each do |emoticon|
+      s += 1 if POSITIVE_EMOTICONS.include?(emoticon)
+      s -= 1 if NEGATIVE_EMOTICONS.include?(emoticon)
+    end
+
+    s
+  end
+
+  def approved?
+    score > 0
+  end
+
+  def rejected?
+    score < 0
+  end
+end

@@ -1,0 +1,32 @@
+== README
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.
+
+
+curl -X POST -H "Content-Type: application/json" -H "X-Github-Event: issue_comment" -d @pull_request_comment.json http://172.16.192.131:3000/events/github
+curl -X POST -H "Content-Type: application/json" -H "X-Github-Event: pull_request" -d @pull_request_creation.json http://172.16.192.131:3000/events/github
