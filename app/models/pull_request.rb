@@ -6,7 +6,7 @@ class PullRequest  < ActiveRecord::Base
   belongs_to :github_user
   belongs_to :repository
 
-  has_many :reviewers
+  has_many :reviews
 
   def parse_body
     @parsed_body = Values::Body.new(body)

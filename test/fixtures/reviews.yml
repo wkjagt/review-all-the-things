@@ -1,0 +1,4 @@
+my_review:
+  github_user: willem
+  pull_request: my_pr
+  status: to_review

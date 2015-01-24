@@ -1,4 +1,4 @@
-class Reviewer < ActiveRecord::Base
+class Review < ActiveRecord::Base
 
   belongs_to :pull_request
   belongs_to :github_user

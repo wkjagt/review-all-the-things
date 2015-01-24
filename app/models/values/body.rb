@@ -17,7 +17,7 @@ module Values
     def extract_mentions
       @mentions = []
       @content.scan(/@\w+/).each do |mention|
-        @mentions << GithubUser.from_github("login" => mention.gsub(/^@/, ''))
+        @mentions << GithubUser.from_github(login: mention.gsub(/^@/, ''))
       end
     end
 

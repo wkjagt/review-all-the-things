@@ -2,34 +2,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   respond_to :json
 
-  before_action :set_event_info#, :verify_signature
+  attr_reader :event
+
+  before_action #, :verify_signature
 
   private
 
-  def set_event_info
-    puts request.headers["X-Github-Event"]
-    puts JSON.parse(request.body.read)
-    return
+  def event
+    return @event if @event
 
-
-    @payload = JSON.parse(request.body.read)
-    @repository = Repository.from_github(@payload["repository"])
-    @sender = GithubUser.from_github(@payload["sender"])
-    @event = event_name
-  end
-
-  def event_name
-    case request.headers["X-Github-Event"]
-    when "pull_request"
-      case @payload["action"]
-      when "opened";  :pull_request_opened
-      when "closed";  :pull_request_closed
-      end
-    when "issue_comment"
-      case @payload["action"]
-      when "created"; :pull_request_comment
-      end
-    end
+    @event = Event.new(
+      request.headers["X-Github-Event"],
+      JSON.parse(request.body.read, symbolize_names: true))
   end
 
   def verify_signature

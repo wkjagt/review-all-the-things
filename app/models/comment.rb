@@ -1,12 +1,12 @@
 class Comment
-  POSITIVE_EMOTICONS = %w':+1: :santa:'
+  POSITIVE_EMOTICONS = %w':+1: :santa: :shipit:'
   NEGATIVE_EMOTICONS = %w':-1:'
 
   attr_reader :commenter, :body
 
   def initialize(params)
-    @commenter = GithubUser.from_github(params["user"])
-    @parsed_body = Values::Body.new(params["body"])
+    @commenter = GithubUser.from_github(params[:user])
+    @parsed_body = Values::Body.new(params[:body])
   end
 
   def score

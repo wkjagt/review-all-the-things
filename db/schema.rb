@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20150120174813) do
     t.datetime "updated_at",             null: false
   end
 
-  create_table "reviewers", force: :cascade do |t|
+  create_table "reviews", force: :cascade do |t|
     t.integer  "github_user_id",  limit: 4
     t.integer  "pull_request_id", limit: 4
     t.string   "status",          limit: 255, default: "to_review"
