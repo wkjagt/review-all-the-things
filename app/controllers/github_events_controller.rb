@@ -25,7 +25,8 @@ class GithubEventsController < ApplicationController
     pull_request = PullRequest.find_by!(url: event.pull_request_url)
     comment = Comment.new(event.comment_hash)
 
-    return unless review = comment.sender.reviews?(pull_request)
+    return unless comment.commenter.reviews?(pull_request)
+    review = comment.commenter.reviews.find_by(pull_request: pull_request)
 
     review.reject if comment.rejected?
     review.approve if comment.approved?

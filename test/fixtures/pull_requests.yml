@@ -1,7 +1,14 @@
 my_pr:
   github_user: willem
-  repository_id: my_repo
+  repository: my_repo
   url: https://www.github.com/wkjagt/myrepo/pulls/144
   title: Fix things
+  body: please review
+  status: open
+my_other_pr:
+  github_user: willem
+  repository: my_repo
+  url: https://www.github.com/wkjagt/myrepo/pulls/144
+  title: Fix other things
   body: please review
   status: open

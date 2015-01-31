@@ -31,4 +31,29 @@ class GithubUserTest < ActiveSupport::TestCase
 
     user.open_pull_request(params, repo)
   end
+
+  test "#prs_to_review returns pull requests this user needs to review" do
+    user = github_users(:willem)
+    to_review = user.prs_to_review
+    assert_equal 1, to_review.count
+    assert_equal PullRequest, to_review.first.class
+    assert_equal "open", to_review.first.status
+  end
+
+  test "#rejected_prs returns pull requests that are rejected by this user" do
+    user = github_users(:willem)
+    to_review = user.rejected_prs
+    assert_equal 1, to_review.count
+    assert_equal PullRequest, to_review.first.class
+    assert_equal "open", to_review.first.status
+  end
+
+  test "#approved_prs returns pull requests that are approved by this user" do
+    user = github_users(:willem)
+    to_review = user.approved_prs
+    assert_equal 1, to_review.count
+    assert_equal PullRequest, to_review.first.class
+    assert_equal "open", to_review.first.status
+  end
+
 end
