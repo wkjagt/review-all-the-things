@@ -5,7 +5,7 @@ class Comment
   attr_reader :commenter, :body
 
   def initialize(params)
-    @commenter = GithubUser.from_github(params[:user])
+    @commenter = GithubUser.from_github(params[:user][:login])
     @parsed_body = Values::Body.new(params[:body])
   end
 

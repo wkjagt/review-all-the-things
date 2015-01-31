@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
 
   post '/events/github' => 'github_events#webhook'
-
+  get '/auth/:provider/callback' => 'session#create'
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

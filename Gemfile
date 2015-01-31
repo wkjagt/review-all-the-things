@@ -51,3 +51,4 @@ end
 gem 'responders', '~> 2.0'
 
 gem 'mysql'
+gem "omniauth-github"

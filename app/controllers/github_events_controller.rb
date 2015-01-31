@@ -13,7 +13,6 @@ class GithubEventsController < ApplicationController
   private
 
   def process_pull_request_opened
-
     pull_request = event.sender.open_pull_request(event.pull_request_hash, event.repository)
 
     pull_request.parsed_body.mentions.each do |username|

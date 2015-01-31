@@ -3,15 +3,15 @@ require 'test_helper'
 class GithubUserTest < ActiveSupport::TestCase
   test "loads or creates a github user based on their github username" do
     assert_no_difference "GithubUser.count" do
-      GithubUser.from_github(login: "wkjagt")
+      GithubUser.from_github("wkjagt")
     end
 
     assert_difference "GithubUser.count", +1 do
-      GithubUser.from_github(login: "this_one_doesnt_exist")
+      GithubUser.from_github("this_one_doesnt_exist")
     end
 
     assert_no_difference "GithubUser.count" do
-      GithubUser.from_github(login: "this_one_doesnt_exist")
+      GithubUser.from_github("this_one_doesnt_exist")
     end
   end
 

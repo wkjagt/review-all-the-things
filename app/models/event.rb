@@ -5,7 +5,7 @@ class Event
     @github_event_name = github_event_name
     @payload = payload
     @repository = Repository.from_github(payload[:repository])
-    @sender = GithubUser.from_github(payload[:sender])
+    @sender = GithubUser.from_github(payload[:sender][:login])
   end
 
   def name

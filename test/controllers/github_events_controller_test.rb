@@ -51,7 +51,7 @@ class GithubEventsControllerTest < ActionController::TestCase
         },
       },
       comment: {
-        body: "comminting with  a :+1: ",
+        body: "commenting with  a :+1: ",
         user: {
           login: "not_a_reviewer"
         }
@@ -82,7 +82,7 @@ class GithubEventsControllerTest < ActionController::TestCase
         },
       },
       comment: {
-        body: "comminting with  a :+1: ",
+        body: "commenting with  a :+1: ",
         user: {
           login: review.github_user.github_username
         }
