@@ -1,4 +1,7 @@
 class GithubEventsController < ApplicationController
+  # before_action #, :verify_signature
+  protect_from_forgery with: :null_session
+  respond_to :json
 
   def webhook
     case event.name
@@ -35,5 +38,19 @@ class GithubEventsController < ApplicationController
     pull_request = PullRequest.find_by(url: event.pull_request_url)
     return unless pull_request.present?
     pull_request.close
+  end
+
+  def event
+    return @event if @event
+
+    @event = Event.new(
+      request.headers["X-Github-Event"],
+      JSON.parse(request.body.read, symbolize_names: true))
+  end
+
+  def verify_signature
+    secret_token = "mysecret"
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret_token, request.body.read)
+    head :unauthorized unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
   end
 end
