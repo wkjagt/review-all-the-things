@@ -15,6 +15,10 @@ class UsersController < ApplicationController
   end
 
   def validate_secret
-    head :forbidden unless params["application-secret"] == "123456789"
+    head :forbidden unless params["application-secret"] == secret_for_username(params["user"])
+  end
+
+  def secret_for_username(username)
+    Digest::MD5.hexdigest("replace_with_secret-#{username}")
   end
 end
