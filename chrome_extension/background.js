@@ -9,9 +9,11 @@ var onMsg = function(msg, sender, sendResponse)
 var getPullRequests = function(callback) {
 
   $.ajax({
-    url: 'http://172.16.192.131:3000/users/wkjagt',
+    url: 'http://172.16.192.131:3000/users/'+localStorage['github-username'],
     method: 'GET',
-
+    data: {
+      'application-secret' : localStorage['application-secret']
+    },
     success: function(data){
       chrome.browserAction.setBadgeText({text: data.length.toString()});
       chrome.browserAction.setBadgeBackgroundColor({color:[0, 200, 0, 100]});
@@ -28,4 +30,5 @@ var getPullRequests = function(callback) {
 }
 
 chrome.runtime.onMessage.addListener(onMsg);
-setInterval( getPullRequests, 1000 );
+getPullRequests();
+setInterval( getPullRequests, 60000 );

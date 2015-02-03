@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
-  before_action :set_headers
-  respond_to :json
+  before_action :set_headers, :validate_secret
+  respond_to :json, :html
 
   def show
     @user = GithubUser.find_by(github_username: params[:user])
@@ -12,6 +12,9 @@ class UsersController < ApplicationController
 
   def set_headers
     headers['Access-Control-Allow-Origin'] = '*'
-    headers['willem'] = 'sdcsd'
+  end
+
+  def validate_secret
+    head :forbidden unless params["application-secret"] == "123456789"
   end
 end
