@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Code review reminders</title>
+    <style>
+      #status { width: 400px; }
+    </style>
+  </head>
+  <body>
+    <div id="status">
+    </div>
+  </body>
+  <script type="text/template" id="pr_template" class="template">
+    <ul>
+      <% for(pr in prs) { %>
+      <li><a href="<%= prs[pr].url %>" target="_blank"><%= prs[pr].title %></a></li>
+      <% } %>
+    </ul>
+  </script>
+  <script src="jquery-2.1.3.min.js"></script>
+  <script src="underscore-min.js"></script>
+  <script src="popup.js"></script>
+</html>
+
