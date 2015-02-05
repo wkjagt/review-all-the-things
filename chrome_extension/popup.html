@@ -13,7 +13,10 @@
   <script type="text/template" id="pr_template" class="template">
     <ul>
       <% for(pr in prs) { %>
-      <li><a href="<%= prs[pr].url %>" target="_blank"><%= prs[pr].title %></a></li>
+      <li>
+        <a href="<%= prs[pr].url %>" target="_blank"><%= prs[pr].title %></a>
+        (<%= prs[pr].github_user.github_username %>)
+      </li>
       <% } %>
     </ul>
   </script>
