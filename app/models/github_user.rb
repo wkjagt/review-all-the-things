@@ -3,6 +3,8 @@ class GithubUser < ActiveRecord::Base
   has_many :pull_requests
   has_many :reviews
 
+  before_create :create_secret
+
   def self.from_github(username)
     user = GithubUser.find_by(github_username: username)
     return user if user.present?
@@ -36,6 +38,10 @@ class GithubUser < ActiveRecord::Base
   end
 
   private
+
+  def create_secret
+    self.secret = SecureRandom.hex
+  end
 
   def prs_for_review_by_status(status)
     prs = []

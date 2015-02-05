@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20150120174813) do
 
   create_table "github_users", force: :cascade do |t|
     t.string   "github_username", limit: 255, null: false
+    t.string   "secret",          limit: 255, null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
