@@ -50,5 +50,7 @@ end
 
 gem 'responders', '~> 2.0'
 
-gem 'mysql'
+gem 'pg'
 gem "omniauth-github"
+
+gem 'rails_12factor', group: :production

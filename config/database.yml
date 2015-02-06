@@ -5,14 +5,20 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: reviews
+  host: localhost
   pool: 5
-  timeout: 5000
 
 development:
-  adapter: mysql
-  user: root
-  database: attention
+  <<: *default
+  username: reviews
+  password: password
+
+  # adapter: mysql
+  # user: root
+  # database: attention
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
