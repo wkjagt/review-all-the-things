@@ -6,4 +6,9 @@ class SessionController < ApplicationController
 
     redirect_to controller: :users, action: :show, user: username
   end
+
+  def destroy
+    logout
+    redirect_to '/'
+  end
 end

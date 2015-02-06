@@ -3,12 +3,13 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'welcome#index'
 
   post '/events/github' => 'github_events#webhook'
   get '/users/:user' => 'users#show', as: :user
 
   get '/auth/:provider/callback' => 'session#create'
+  get '/logout' => 'session#destroy', as: :logout
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

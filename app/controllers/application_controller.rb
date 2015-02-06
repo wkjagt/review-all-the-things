@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
     session[:user_id] = user.id
     @current_user = user
   end
+
+  def logout
+    session.delete(:user_id)
+  end
 end
