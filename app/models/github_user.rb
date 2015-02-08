@@ -5,11 +5,11 @@ class GithubUser < ActiveRecord::Base
 
   before_create :create_secret
 
-  def self.from_github(username)
+  def self.from_github(username, *args)
     user = GithubUser.find_by(github_username: username)
     return user if user.present?
 
-    GithubUser.create(github_username: username)
+    GithubUser.create(github_username: username, access_token: args.extract_options![:token])
   end
 
   def open_pull_request(params, repository)

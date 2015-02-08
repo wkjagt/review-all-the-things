@@ -3,6 +3,7 @@ class CreateGithubUsers < ActiveRecord::Migration
     create_table :github_users do |t|
       t.string :github_username, null: false
       t.string :secret, null: false
+      t.string :access_token, null: false
       t.timestamps null: false
     end
   end

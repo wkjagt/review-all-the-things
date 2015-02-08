@@ -13,35 +13,39 @@
 
 ActiveRecord::Schema.define(version: 20150120174813) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "github_users", force: :cascade do |t|
-    t.string   "github_username", limit: 255, null: false
-    t.string   "secret",          limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.string   "github_username", null: false
+    t.string   "secret",          null: false
+    t.string   "access_token",    null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "pull_requests", force: :cascade do |t|
-    t.integer  "github_user_id", limit: 4,                      null: false
-    t.integer  "repository_id",  limit: 4,                      null: false
-    t.string   "url",            limit: 255,                    null: false
-    t.string   "title",          limit: 255,                    null: false
-    t.text     "body",           limit: 65535
-    t.string   "status",         limit: 255,   default: "open"
+    t.integer  "github_user_id",                  null: false
+    t.integer  "repository_id",                   null: false
+    t.string   "url",                             null: false
+    t.string   "title",                           null: false
+    t.text     "body"
+    t.string   "status",         default: "open"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "repositories", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.string   "url",        limit: 255, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",       null: false
+    t.string   "url",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "reviews", force: :cascade do |t|
-    t.integer  "github_user_id",  limit: 4
-    t.integer  "pull_request_id", limit: 4
-    t.string   "status",          limit: 255, default: "to_review"
+    t.integer  "github_user_id"
+    t.integer  "pull_request_id"
+    t.string   "status",          default: "to_review"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
