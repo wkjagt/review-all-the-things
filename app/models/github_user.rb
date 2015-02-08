@@ -21,6 +21,10 @@ class GithubUser < ActiveRecord::Base
     )
   end
 
+  def works_for?(company_name)
+    Octokit::Client.new(:access_token => access_token).organization_member?(company_name, github_username)
+  end
+
   def reviews?(pull_request)
     reviews.find_by(pull_request: pull_request).present?
   end

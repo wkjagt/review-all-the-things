@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def show
     @user = GithubUser.find_by(github_username: params[:user])
 
-    return head :not_found unless @user
+    return head :not_found unless @user and @user.works_for?('Shopify')
 
     respond_to do |format|
       format.json do

@@ -52,5 +52,6 @@ gem 'responders', '~> 2.0'
 
 gem 'pg'
 gem "omniauth-github"
+gem "octokit", "~> 3.0"
 
 gem 'rails_12factor', group: :production
