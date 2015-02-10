@@ -5,6 +5,8 @@ class GithubUser < ActiveRecord::Base
 
   before_create :create_secret
 
+  validate :validate_organization
+
   def self.from_github(username, *args)
     user = GithubUser.find_by(github_username: username)
     return user if user.present?
@@ -19,10 +21,6 @@ class GithubUser < ActiveRecord::Base
       body: params[:body],
       repository: repository
     )
-  end
-
-  def works_for?(company_name)
-    Octokit::Client.new(:access_token => access_token).organization_member?(company_name, github_username)
   end
 
   def reviews?(pull_request)
@@ -42,6 +40,10 @@ class GithubUser < ActiveRecord::Base
   end
 
   private
+
+  def validate_organization
+    Octokit::Client.new(:access_token => access_token).organization_member?('Shopify', github_username)
+  end
 
   def create_secret
     self.secret = SecureRandom.hex
