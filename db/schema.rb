@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150120174813) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "github_users", force: :cascade do |t|
     t.string   "github_username", null: false
     t.string   "secret"
