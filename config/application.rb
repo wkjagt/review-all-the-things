@@ -21,8 +21,8 @@ module Attention
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.github_webhooks.validate_secret = true
-    config.github_webhooks.secret = ENV['GITHUB_WEBHOOK_SECRET']
+    config.github_webhooks_validate_secret = true
+    config.github_webhooks_secret = ENV['GITHUB_WEBHOOK_SECRET'] || ''
     config.active_record.raise_in_transactional_callbacks = true
   end
 end

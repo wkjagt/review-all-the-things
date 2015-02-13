@@ -49,8 +49,8 @@ class GithubEventsController < ApplicationController
   end
 
   def verify_signature
-    return unless Rails.configuration.github_webhooks.validate_secret
-    secret = Rails.configuration.github_webhooks.secret
+    return unless Rails.configuration.github_webhooks_validate_secret
+    secret = Rails.configuration.github_webhooks_secret
     signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret, request.body.read)
     head :unauthorized unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
   end

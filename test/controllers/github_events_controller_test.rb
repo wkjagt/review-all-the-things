@@ -2,6 +2,10 @@ require 'test_helper'
 
 class GithubEventsControllerTest < ActionController::TestCase
 
+  def setup
+    Rails.configuration.github_webhooks_validate_secret = false
+  end
+
   test "creates the @event object before any action" do
     json = get_json("pull_request_creation.json")
     @request.headers["X-Github-Event"] = "pull_request"
@@ -103,8 +107,10 @@ class GithubEventsControllerTest < ActionController::TestCase
   end
 
   test "it validates the secret from GitHub" do
+    Rails.configuration.github_webhooks_validate_secret = true
+
     review = reviews(:my_review)
-    secret = Rails.configuration.github_webhooks.secret
+    secret = Rails.configuration.github_webhooks_secret
     params = {
       action: :this_doesnt_exist,
       issue: {
