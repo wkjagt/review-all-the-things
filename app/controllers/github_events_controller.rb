@@ -1,5 +1,5 @@
 class GithubEventsController < ApplicationController
-  # before_action #, :verify_signature
+  before_action :verify_signature
   protect_from_forgery with: :null_session
   respond_to :json
 
@@ -49,8 +49,9 @@ class GithubEventsController < ApplicationController
   end
 
   def verify_signature
-    secret_token = "mysecret"
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret_token, request.body.read)
+    return unless Rails.configuration.github_webhooks.validate_secret
+    secret = Rails.configuration.github_webhooks.secret
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret, request.body.read)
     head :unauthorized unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
   end
 end

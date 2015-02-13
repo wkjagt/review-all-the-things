@@ -101,4 +101,35 @@ class GithubEventsControllerTest < ActionController::TestCase
 
     assert_equal "approved", review.reload.status
   end
+
+  test "it validates the secret from GitHub" do
+    review = reviews(:my_review)
+    secret = Rails.configuration.github_webhooks.secret
+    params = {
+      action: :this_doesnt_exist,
+      issue: {
+        pull_request: {
+          html_url: review.pull_request.url
+        },
+      },
+      comment: {
+        body: "commenting with  a :+1: ",
+        user: {
+          login: review.github_user.github_username
+        }
+      },
+      repository: {
+        html_url: review.pull_request.repository.url
+      },
+      sender: {
+        login: review.github_user.github_username
+      }
+    }
+    json = params.to_json
+    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret, json)
+    @request.headers['HTTP_X_HUB_SIGNATURE'] = signature
+    raw_post :webhook, json
+
+    assert_equal 200, response.code.to_i
+  end
 end
