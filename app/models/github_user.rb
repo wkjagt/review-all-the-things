@@ -50,11 +50,6 @@ class GithubUser < ActiveRecord::Base
   end
 
   def prs_for_review_by_status(status)
-    prs = []
-    reviews.where(status: status).each do |review|
-      prs << review.pull_request
-    end
-
-    prs
+    reviews.where(status: status).map(&:pull_request)
   end
 end
