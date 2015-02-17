@@ -26,12 +26,17 @@ class GithubEventsController < ApplicationController
   def process_pull_request_comment
     pull_request = PullRequest.find_by!(url: event.pull_request_url)
     comment = Comment.new(event.comment_hash)
+    owner = pull_request.github_user
 
-    return unless comment.commenter.reviews?(pull_request)
-    review = comment.commenter.reviews.find_by(pull_request: pull_request)
-
-    review.reject if comment.rejected?
-    review.approve if comment.approved?
+    if comment.commenter.reviews?(pull_request)
+      review = comment.commenter.reviews.find_by(pull_request: pull_request)
+      review.reject if comment.rejected?
+      review.approve if comment.approved?
+    elsif comment.commenter == owner
+      comment.parsed_body.mentions.each do |username|
+        pull_request.reviews.create(github_user: username)
+      end
+    end
   end
 
   def process_pull_request_closed

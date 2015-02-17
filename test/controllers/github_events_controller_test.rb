@@ -4,6 +4,7 @@ class GithubEventsControllerTest < ActionController::TestCase
 
   def setup
     Rails.configuration.github_webhooks_validate_secret = false
+    Octokit::Client.any_instance.stubs(:organization_member?).returns(true)
   end
 
   test "creates the @event object before any action" do
@@ -55,7 +56,7 @@ class GithubEventsControllerTest < ActionController::TestCase
         },
       },
       comment: {
-        body: "commenting with  a :+1: ",
+        body: "commenting with  a :+1: @someunknowndude",
         user: {
           login: "not_a_reviewer"
         }
@@ -71,8 +72,9 @@ class GithubEventsControllerTest < ActionController::TestCase
     json = params.to_json
 
     @request.headers["X-Github-Event"] = "issue_comment"
-    raw_post :webhook, json
-
+    assert_no_difference 'Review.count' do
+      raw_post :webhook, json
+    end
     Comment.any_instance.expects(:score).never
   end
 
@@ -138,4 +140,44 @@ class GithubEventsControllerTest < ActionController::TestCase
 
     assert_equal 200, response.code.to_i
   end
+
+  test "a pr comment from the owner can add a reviewer to the pr" do
+    pr = pull_requests(:my_pr)
+    new_reviewer = github_users(:grumpy_dev)
+
+    params = {
+      action: :created,
+      issue: {
+        pull_request: {
+          html_url: pr.url
+        },
+      },
+      comment: {
+        body: "please review this thing @#{new_reviewer.github_username}",
+        user: {
+          login: pr.github_user.github_username
+        }
+      },
+      repository: {
+        html_url: pr.repository.url
+      },
+      sender: {
+        login: pr.github_user.github_username
+      }
+    }
+
+    json = params.to_json
+
+    @request.headers["X-Github-Event"] = "issue_comment"
+
+    pr.reviews.destroy_all
+    assert_difference 'Review.count', +1 do
+      raw_post :webhook, json
+    end
+    assert pr.reviews.find_by(github_user_id: new_reviewer.id).present?
+  end
+
+  # test "a pr comment from the owner can add a reviewer to the pr" do
+  #   refute true # implement this
+  # end
 end
