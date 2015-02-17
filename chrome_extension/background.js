@@ -9,7 +9,7 @@ var onMsg = function(msg, sender, sendResponse)
 var getPullRequests = function(callback) {
 
   $.ajax({
-    url: 'http://172.16.192.131:3000/users/'+localStorage['github-username'],
+    url: 'https://review-all-the-things.herokuapp.com/users/'+localStorage['github-username'],
     method: 'GET',
     data: {
       'application-secret' : localStorage['application-secret']
