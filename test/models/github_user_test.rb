@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class GithubUserTest < ActiveSupport::TestCase
+  def setup
+    Octokit::Client.any_instance.stubs(:organization_member?).returns(true)
+  end
+
   test "loads or creates a github user based on their github username" do
     assert_no_difference "GithubUser.count" do
       GithubUser.from_github("wkjagt")
@@ -33,7 +37,7 @@ class GithubUserTest < ActiveSupport::TestCase
   end
 
   test "#prs_to_review returns pull requests this user needs to review" do
-    user = github_users(:willem)
+    user = github_users(:some_other_user)
     to_review = user.prs_to_review
     assert_equal 1, to_review.count
     assert_equal PullRequest, to_review.first.class
@@ -41,19 +45,18 @@ class GithubUserTest < ActiveSupport::TestCase
   end
 
   test "#rejected_prs returns pull requests that are rejected by this user" do
-    user = github_users(:willem)
-    to_review = user.rejected_prs
-    assert_equal 1, to_review.count
-    assert_equal PullRequest, to_review.first.class
-    assert_equal "open", to_review.first.status
+    user = github_users(:some_other_user)
+    rejected = user.rejected_prs
+    assert_equal 1, rejected.count
+    assert_equal PullRequest, rejected.first.class
+    assert_equal "open", rejected.first.status
   end
 
   test "#approved_prs returns pull requests that are approved by this user" do
-    user = github_users(:willem)
+    user = github_users(:some_other_user)
     to_review = user.approved_prs
     assert_equal 1, to_review.count
     assert_equal PullRequest, to_review.first.class
     assert_equal "open", to_review.first.status
   end
-
 end

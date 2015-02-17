@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class Values::BodyTest < ActiveSupport::TestCase
+  def setup
+    Octokit::Client.any_instance.stubs(:organization_member?).returns(true)
+  end
+
   test "using mentions, causes a github user to be created for each if it doesn't exist" do
     assert_difference "GithubUser.count", +2 do
       Values::Body.new("please review @wkjagt, @user_a and @user_b")

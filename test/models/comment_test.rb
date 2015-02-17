@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class CommentTest < ActiveSupport::TestCase
+  def setup
+    Octokit::Client.any_instance.stubs(:organization_member?).with(anything, anything).returns(true)
+  end
+
   test "a comment has a score bases on its positive and negative emoticons" do
     comment = Comment.new(user: {login: "wkjagt"}, body: "looks good :shipit: :santa: :+1:")
     assert_equal 3, comment.score

@@ -2,7 +2,7 @@ class Comment
   POSITIVE_EMOTICONS = %w':+1: :santa: :shipit:'
   NEGATIVE_EMOTICONS = %w':-1:'
 
-  attr_reader :commenter, :body
+  attr_reader :commenter, :body, :parsed_body
 
   def initialize(params)
     @commenter = GithubUser.from_github(params[:user][:login])
