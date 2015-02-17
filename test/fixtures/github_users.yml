@@ -2,3 +2,11 @@ willem:
   github_username: wkjagt
   secret: my_secret
   access_token: my_access_token
+some_other_user:
+  github_username: some_other
+  secret: my_secret
+  access_token: my_access_token
+grumpy_dev:
+  github_username: grumpy_dev
+  secret: my_secret
+  access_token: my_access_token
