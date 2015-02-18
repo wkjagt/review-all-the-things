@@ -45,6 +45,8 @@ group :development, :test do
   gem 'spring-commands-teaspoon'
 
   gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'awesome_print'
   gem 'mocha'
 end
 

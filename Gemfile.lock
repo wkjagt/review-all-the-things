@@ -38,6 +38,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.7)
     arel (6.0.0)
+    awesome_print (1.6.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -114,6 +115,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (2.0.0)
+      byebug (~> 3.4)
+      pry (~> 0.10)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
     rack (1.6.0)
@@ -201,6 +205,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
@@ -209,6 +214,7 @@ DEPENDENCIES
   octokit (~> 3.0)
   omniauth-github
   pg
+  pry-byebug
   pry-rails
   rails (= 4.2.0)
   rails_12factor
