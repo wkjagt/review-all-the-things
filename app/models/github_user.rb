@@ -42,6 +42,8 @@ class GithubUser < ActiveRecord::Base
   private
 
   def validate_organization
+    return unless organization = Rails.configuration.github_webhooks_validate_organization
+
     Octokit::Client.new(:access_token => access_token).organization_member?('Shopify', github_username)
   end
 
