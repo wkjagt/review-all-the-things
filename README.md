@@ -59,4 +59,5 @@ Go into your repository's settings and click *Webhooks & Services*. In the *Webh
 - *Which events...?* : Select *Let me select individual events.* and only select *Pull Request* and *Issue Comment* (GitHub treats pull requests as issues, and comments on a pull request trigger an issue comment webhook.)
 
 
-
+#### Setup the Chrome extension
+Install the Chrome extension from the `chrome_extension` folder in this repository. Richt click on the icon and click options. Fill in the details. It will ask you for a secret. This is **NOT** the secret you used for the GitHub webhooks, but your personal secret which can be obtained from the Rails application which you installed in step 2. Visit the front page and click 'login with GitHub'.
