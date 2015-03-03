@@ -57,3 +57,4 @@ gem "omniauth-github"
 gem "octokit", "~> 3.0"
 
 gem 'rails_12factor', group: :production
+gem 'thin'
