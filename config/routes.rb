@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   post '/events/github' => 'github_events#webhook'
   get '/user' => 'users#show', as: :user
+  get '/users/:user' => 'users#user_log', as: :user_log
 
   get '/auth/:provider/callback' => 'session#create'
   get '/logout' => 'session#destroy', as: :logout
