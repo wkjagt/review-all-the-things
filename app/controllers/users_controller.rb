@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   respond_to :json, :html
 
   def show
-    @user = GithubUser.find_by(github_username: params[:user])
+    @user = current_user
 
     return head :not_found unless @user
 

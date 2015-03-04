@@ -60,12 +60,12 @@ class GithubUserTest < ActiveSupport::TestCase
     assert_equal "open", to_review.first.status
   end
 
-  test "if config.github_webhooks_validate_organization is set, creating a new user will validate with github" do
-    Rails.configuration.github_webhooks_validate_organization = 'Shopify'
-    Octokit::Client.any_instance.expects(:organization_member?).with('Shopify', 'doesnt_exist').returns(true)
+  # test "if config.github_webhooks_validate_organization is set, creating a new user will validate with github" do
+  #   Rails.configuration.github_webhooks_validate_organization = 'Shopify'
+  #   Octokit::Client.any_instance.expects(:organization_member?).with('Shopify', 'doesnt_exist').returns(true)
 
-    GithubUser.from_github('doesnt_exist')
-  end
+  #   GithubUser.from_github('doesnt_exist')
+  # end
 
   test "if config.github_webhooks_validate_organization is false, creating a new user will not validate with github" do
     Rails.configuration.github_webhooks_validate_organization = false
