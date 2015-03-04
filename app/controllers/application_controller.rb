@@ -3,8 +3,12 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    return unless session[:user_id]
-    @current_user ||= GithubUser.find(session[:user_id])
+
+    if user_id = session[:user_id]
+      @current_user ||= GithubUser.find_by(id: user_id)
+    elsif params["application-secret"] && params["user"]
+      @current_user ||= GithubUser.find_by(github_username: params["user"], secret: params["application-secret"])
+    end
   end
 
   def current_user=(user)
