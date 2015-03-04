@@ -7,18 +7,12 @@ class UsersController < ApplicationController
     @user = current_user
 
     return head :not_found unless @user
+    return redirect_to '/auth/github' unless current_user
+  end
 
-    respond_to do |format|
-      format.json do
-        return head :forbidden unless params["application-secret"] == @user.secret
-        render json: @user.prs_to_review.to_json(include: :github_user)
-      end
-
-      format.html do
-        return redirect_to '/auth/github' unless current_user
-      end
-    end
-
+  def user_log
+    return head :forbidden unless params["application-secret"] == current_user.secret
+    render json: current_user.prs_to_review.to_json(include: :github_user)
   end
 
   private
