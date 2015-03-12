@@ -1,5 +1,12 @@
 class Comment
-  POSITIVE_EMOTICONS = %w':+1: :santa: :shipit:'
+  POSITIVE_EMOTICONS = %w(
+    :+1:
+    :santa:
+    :shipit:
+    :rainbow:
+    :raised_hands:
+    :rocket:
+  )
   NEGATIVE_EMOTICONS = %w':-1:'
 
   attr_reader :commenter, :body, :parsed_body
