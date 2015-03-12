@@ -133,7 +133,7 @@ class GithubEventsControllerTest < ActionController::TestCase
     assert_equal 200, response.code.to_i
   end
 
-  test "a pr comment from the owner can add a reviewer to the pr" do
+  test "a pr comment from the owner can add an existing user as reviewer to the pr" do
     pr = pull_requests(:my_pr)
     new_reviewer = github_users(:grumpy_dev)
 
@@ -167,6 +167,42 @@ class GithubEventsControllerTest < ActionController::TestCase
     assert pr.reviews.find_by(github_user_id: new_reviewer.id).present?
   end
 
+  test "a pr comment from the owner can add a new non-existent user as reviewer to the pr" do
+    pr = pull_requests(:my_pr)
+
+    params = {
+      action: :created,
+      issue: {
+        pull_request: {
+          html_url: pr.url
+        },
+      },
+      comment: {
+        body: "please review this thing @brandnewuser",
+        user: {
+          login: pr.github_user.github_username
+        }
+      },
+      repository: {
+        html_url: pr.repository.url
+      },
+      sender: {
+        login: pr.github_user.github_username
+      }
+    }
+
+    @request.headers["X-Github-Event"] = "issue_comment"
+
+    assert_difference 'Review.count', +1 do
+      assert_difference 'GithubUser.count', +1 do
+        raw_post :webhook, params.to_json
+      end
+    end
+
+    created_user = GithubUser.find_by(github_username: "brandnewuser")
+    assert_equal pr, created_user.reviews.first.pull_request
+  end
+
   test "a pr comment from the owner can reset a review to to_review" do
     pr = pull_requests(:my_pr)
     pr.reviews.each { |review| review.approve }
@@ -195,9 +231,14 @@ class GithubEventsControllerTest < ActionController::TestCase
 
     @request.headers["X-Github-Event"] = "issue_comment"
 
+    # the reviewer has one more pr to review
     assert_difference 'pr.reviews.first.github_user.prs_to_review.count', +1 do
+      # it's an existing user, so no new users were created
       assert_no_difference 'GithubUser.count' do
-        raw_post :webhook, params.to_json
+        # it's an existing (approved) review, so no new reviews are created
+        assert_no_difference 'pr.reviews.count' do
+          raw_post :webhook, params.to_json
+        end
       end
     end
     assert pr.reviews.find_by(github_user_id: pr.reviews.first.github_user.id).present?
