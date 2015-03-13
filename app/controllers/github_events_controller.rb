@@ -34,11 +34,7 @@ class GithubEventsController < ApplicationController
       review.approve if comment.approved?
     elsif comment.commenter == owner
       comment.parsed_body.mentions.each do |github_user|
-        if review = pull_request.reviews.find_by(github_user: github_user)
-          review.update_attribute(:status, :to_review)
-          next
-        end
-        pull_request.reviews.create(github_user: github_user)
+        pull_request.reviews.create_or_reset_for(github_user)
       end
     end
   end
