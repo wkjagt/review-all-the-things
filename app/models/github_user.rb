@@ -44,6 +44,9 @@ class GithubUser < ActiveRecord::Base
   end
 
   def prs_for_review_by_status(status)
-    reviews.where(status: status).map(&:pull_request)
+    reviews.where(status: status)
+           .includes(:pull_request)
+           .where(pull_requests: { status: "open" })
+           .map(&:pull_request)
   end
 end
