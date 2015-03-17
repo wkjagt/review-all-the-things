@@ -28,14 +28,14 @@ class GithubEventsController < ApplicationController
     comment = Comment.new(event.comment_hash)
     owner = pull_request.github_user
 
-    if comment.commenter.reviews?(pull_request)
-      review = comment.commenter.reviews.find_by(pull_request: pull_request)
-      review.reject if comment.rejected?
-      review.approve if comment.approved?
-    elsif comment.commenter == owner
+    if comment.commenter == owner
       comment.parsed_body.mentions.each do |github_user|
         pull_request.reviews.find_or_create_by(github_user: github_user).update_attribute(:status, :to_review)
       end
+    elsif comment.commenter.reviews?(pull_request)
+      review = comment.commenter.reviews.find_by(pull_request: pull_request)
+      review.reject if comment.rejected?
+      review.approve if comment.approved?
     end
   end
 

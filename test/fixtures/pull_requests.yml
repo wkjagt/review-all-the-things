@@ -12,3 +12,10 @@ my_other_pr:
   title: Fix other things
   body: please review
   status: open
+closed_pr:
+  github_user: some_other_user
+  repository: my_repo
+  url: https://www.github.com/wkjagt/myrepo/pulls/145
+  title: Fix other things
+  body: please review
+  status: closed

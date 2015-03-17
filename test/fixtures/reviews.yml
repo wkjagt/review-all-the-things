@@ -10,3 +10,11 @@ approved:
   github_user: some_other_user
   pull_request: my_other_pr
   status: approved
+willems_review1:
+  github_user: willem
+  pull_request: my_pr
+  status: to_review
+willems_review2:
+  github_user: willem
+  pull_request: closed_pr
+  status: to_review
