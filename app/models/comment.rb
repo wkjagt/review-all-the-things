@@ -6,6 +6,8 @@ class Comment
     :rainbow:
     :raised_hands:
     :rocket:
+    :ship:
+    :sheep:
   )
   NEGATIVE_EMOTICONS = %w':-1:'
 
