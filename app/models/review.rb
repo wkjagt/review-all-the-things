@@ -10,4 +10,8 @@ class Review < ActiveRecord::Base
   def reject
     update_attribute(:status, :rejected)
   end
+
+  def github_username
+    github_user.github_username
+  end
 end

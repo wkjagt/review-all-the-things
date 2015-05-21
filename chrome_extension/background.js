@@ -9,21 +9,22 @@ var onMsg = function(msg, sender, sendResponse)
 var getPullRequests = function(callback) {
 
   $.ajax({
-    url: 'https://review-all-the-things.herokuapp.com/users/'+localStorage['github-username'],
+    url: 'https://willem.ngrok.io/users/'+localStorage['github-username'],
     method: 'GET',
     data: {
       'application-secret' : localStorage['application-secret']
     },
     success: function(data){
-      chrome.browserAction.setBadgeText({text: data.length.toString()});
+      chrome.browserAction.setBadgeText({text: data['to_review'].length.toString()});
       chrome.browserAction.setBadgeBackgroundColor({color:[0, 200, 0, 100]});
       if(callback) {
-        callback({ "prs" : data });
+        callback(data);
       }
     },
-    error : function() {
+    error : function(error) {
       chrome.browserAction.setBadgeBackgroundColor({color:[200, 0, 0, 100]});
       chrome.browserAction.setBadgeText({text: '?'});
+      console.log(error);
     },
     async : false
   });

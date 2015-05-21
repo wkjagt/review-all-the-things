@@ -37,6 +37,24 @@ class GithubUser < ActiveRecord::Base
     prs_for_review_by_status(:approved)
   end
 
+  def unmerged_prs
+    pull_requests.where(status: :open)
+                 .includes(:reviews)
+  end
+
+  def feed
+    {
+      to_review: prs_to_review.as_json(include: {
+                                                  github_user: { only: :github_username },
+                                                  repository: { only: [:url, :name] }
+                                                }),
+      unmerged_prs: unmerged_prs.as_json(include: {
+                                                    repository: { only: [:url, :name] },
+                                                    reviews: { methods: [:github_username]},
+                                                  })
+    }
+  end
+
   private
 
   def create_secret

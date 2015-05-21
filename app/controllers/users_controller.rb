@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   def user_log
     return head :forbidden unless params["application-secret"] == current_user.secret
-    render json: current_user.prs_to_review.to_json(include: { github_user: { only: :github_username } } )
+    render json: current_user.feed
   end
 
   private

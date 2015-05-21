@@ -1,37 +1,94 @@
-var link = $('<a class="js-selected-navigation-item subnav-item" href="#">Code Reviews</a>');
+var link = $('<a id="code-reviews-tab" class="js-selected-navigation-item subnav-item" href="#">Code Reviews</a>');
 
-function pr_row(pr) {
-  debugger
+function table_header() {
   return ''+
-  '<li class="table-list-item">'+
+    '<div class="table-list-filters">'+
+    '    <div class="table-list-header-toggle states left">'+
+    '        <a href="#" class="btn-link selected">'+
+    '          <span class="octicon octicon-microscope"></span>'+
+    '          To review'+
+    '        </a>'+
+    '        <a href="#" class="btn-link ">'+
+    '          <span class="octicon octicon-git-pull-request"></span>'+
+    '          My unmerged PRs'+
+    '        </a>'+
+    '    </div>'+
+    '</div>';
+}
+
+function to_review_row(pr) {
+  return ''+
+  '<li class="table-list-item to_review">'+
   '  <div class="table-list-cell table-list-cell-type"></div>'+
   '  <div class="table-list-cell issue-title">'+
-  '    <a class="issue-title-link issue-nwo-link">Shopify/shopify</a>'+
+  '    <a href="'+ pr['repository']['url']+'" class="issue-title-link issue-nwo-link">'+ pr['repository']['name']+'</a>'+
   '    <a href="'+ pr['url'] +'" class="issue-title-link">'+ pr['title'] +'</a>'+
   '    <div class="issue-meta">'+
   '      <span class="issue-meta-section opened-by">'+
-  '        #2513 opened <time title="">a day ago</time> by <a>'+ pr['github_user']['github_username'] +'</a>'+
+  '        opened <time class="timeago" datetime="'+ pr['created_at'] +'">'+ pr['created_at'] +'</time> by <a>'+ pr['github_user']['github_username'] +'</a>'+
   '      </span>'+
   '    </div>'+
   '  </div>'+
   '  <div></div>'+
   '  <div class="table-list-cell issue-comments"><a></a></div>'+
-  '</li>'
-  ;
+  '</li>';
+}
+
+function unmerged_pr_row(pr) {
+  row = ''+
+  '<li class="table-list-item unmerged_pr">'+
+  '  <div class="table-list-cell table-list-cell-type"></div>'+
+  '  <div class="table-list-cell issue-title">'+
+  '    <a href="'+ pr['repository']['url']+'" class="issue-title-link issue-nwo-link">'+ pr['repository']['name']+'</a>'+
+  '    <a href="'+ pr['url'] +'" class="issue-title-link">'+ pr['title'] +'</a>'+
+  '    <span style="padding-left:20px;">';
+
+  for(var i in pr['reviews']) {
+    var review = pr['reviews'][i],
+        user = review['github_username'];
+    if(review['status'] == 'to_review') {
+      var status_class = 'octicon octicon-sync',
+          tooltip = review['github_username'] + " hasn't approved this PR yet";
+    } else {
+      var status_class = 'octicon text-success octicon-check',
+          tooltip = review['github_username'] + " has approved this PR";
+    }
+    row += ''+
+      '<span class="tooltipped tooltipped-e" aria-label="'+ tooltip +'">'+
+      '  <span class="'+status_class+'"></span>'+
+      '</span>'
+  }
+
+  return row+
+  '    </span>'
+  '    <div class="issue-meta">'+
+  '      <span class="issue-meta-section opened-by">'+
+  '        opened <time class="timeago" datetime="'+ pr['created_at'] +'">'+ pr['created_at'] +'</time>'+
+  '      </span>'+
+  '    </div>'+
+  '  </div>'+
+  '  <div></div>'+
+  '  <div class="table-list-cell issue-comments"><a></a></div>'+
+  '</li>';
 }
 
 link.click(function(e){
   e.preventDefault();
   $('a.subnav-item').removeClass('selected');
   link.addClass('selected');
-  $('.table-list-header').html('').css({"padding" : 22});
+  $('.table-list-header').html(table_header());//.css({"padding" : 22});
   $('.table-list-issues').html('');
 
   chrome.runtime.sendMessage(null, { action : 'get_prs' }, function(response){
-    for(var i in response['prs']) {
-      $('.table-list-issues').append(pr_row(response['prs'][i]));
+    for(var i in response['to_review']) {
+      $('.table-list-issues').append($(to_review_row(response['to_review'][i])));
     }
+    for(var i in response['unmerged_prs']) {
+      $('.table-list-issues').append($(unmerged_pr_row(response['unmerged_prs'][i])));
+    }
+
+    $('.table-list-issues time').timeago();
   });
 });
 
-$('.subnav-links').append(link);
+$(".subnav-links").click(function(e){e.stopPropagation()}).append(link);
