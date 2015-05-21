@@ -12,9 +12,10 @@ default: &default
   pool: 5
 
 development:
-  <<: *default
-  username: reviews
-  password: password
+  adapter: mysql
+  username: root
+  host: localhost
+  database: code_reviews
 
   # adapter: mysql
   # user: root

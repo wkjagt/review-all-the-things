@@ -48,6 +48,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'awesome_print'
   gem 'mocha'
+  gem 'mysql'
 end
 
 gem 'responders', '~> 2.0'
