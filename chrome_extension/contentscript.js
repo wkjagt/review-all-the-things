@@ -77,6 +77,7 @@ link.click(function(e){
   link.addClass('selected');
   $('.table-list-header').html(table_header());
   $('.table-list-issues').html('');
+  $('.paginate-container').remove();
 
   chrome.runtime.sendMessage(null, { action : 'get_prs' }, function(response){
     for(var i in response['to_review']) {
@@ -104,6 +105,5 @@ link.click(function(e){
     $('li.to-review-row').hide();
   });
 });
-
 
 $(".subnav-links").click(function(e){e.stopPropagation()}).append(link);

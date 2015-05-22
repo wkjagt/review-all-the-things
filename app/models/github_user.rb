@@ -39,6 +39,7 @@ class GithubUser < ActiveRecord::Base
 
   def unmerged_prs
     pull_requests.where(status: :open)
+                 .order(created_at: :desc)
                  .includes(:reviews)
   end
 
