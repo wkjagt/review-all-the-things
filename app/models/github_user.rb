@@ -47,9 +47,11 @@ class GithubUser < ActiveRecord::Base
     {
       to_review: prs_to_review.as_json(include: {
                                                   github_user: { only: :github_username },
-                                                  repository: { only: [:url, :name] }
+                                                  repository: { only: [:url, :name] },
+                                                  reviews: { methods: [:github_username]},
                                                 }),
       unmerged_prs: unmerged_prs.as_json(include: {
+                                                    github_user: { only: :github_username },
                                                     repository: { only: [:url, :name] },
                                                     reviews: { methods: [:github_username]},
                                                   })

@@ -3,25 +3,11 @@
   <head>
     <title>Code review reminders</title>
     <style>
-      #status { width: 400px; }
+      body { width: 150px; }
     </style>
   </head>
   <body>
-    <div id="status">
-    </div>
+    <a href="https://github.com/pulls/mentioned#code-reviews" target="_blank">see code reviews</a>
   </body>
-  <script type="text/template" id="pr_template" class="template">
-    <ul>
-      <% for(pr in prs) { %>
-      <li>
-        <a href="<%= prs[pr].url %>" target="_blank"><%= prs[pr].title %></a>
-        (<%= prs[pr].github_user.github_username %>)
-      </li>
-      <% } %>
-    </ul>
-  </script>
-  <script src="jquery-2.1.3.min.js"></script>
-  <script src="underscore-min.js"></script>
-  <script src="popup.js"></script>
 </html>
 
