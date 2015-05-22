@@ -1,15 +1,19 @@
-function save_options(e) {
-    e.preventDefault();
-    localStorage['github-username'] = $('input#github-username').val();
-    localStorage['application-secret'] = $('input#application-secret').val();
-    $('#save').val('Saved!');
-}
-$(window).ready(function(){
-    if(localStorage['github-username']) {
-        $('input#github-username').val(localStorage['github-username']);
-    }
-    if(localStorage['application-secret']) {
-        $('input#application-secret').val(localStorage['application-secret']);
-    }
-});
-$('form').on('submit', save_options);
+// step 1: open link that redirects to
+var loggin_window = window.open('https://willem.ngrok.io/auth/github', '_blank');
+loggin_window.focus();
+
+// step 2: setup a listener for when the iframe is added to the body. The opened
+// iframe will send a message containing username and application secret.
+window.addEventListener('message', function(evt){
+  localStorage['github-username'] = evt.data['github_username'];
+  localStorage['application-secret'] = evt.data['user_secret'];
+  $('iframe').remove();
+  $('#success').show().find('#github-username').html(localStorage['github-username']);
+}, false);
+
+var timer = setInterval(function() {
+  if (loggin_window.closed) {
+    clearInterval(timer);
+    $('body').append('<iframe src="https://willem.ngrok.io/user"></iframe>')
+  }
+}, 500);

@@ -29,13 +29,15 @@ function pr_row(pr, user_name) {
 
   for(var i in pr['reviews']) {
     var review = pr['reviews'][i],
-        user = review['github_username'];
+        user = review['github_username'],
+        my_review = user_name == review['github_username'];
+
     if(review['status'] == 'to_review') {
       var status_class = 'octicon octicon-sync',
-          tooltip = my_pr ? (review['github_username'] + " hasn't approved this PR yet") : "you haven't approved this PR yet";
+          tooltip = my_review ? "you haven't approved this PR yet" : (review['github_username'] + " hasn't approved this PR yet");
     } else {
       var status_class = 'octicon text-success octicon-check',
-          tooltip = my_pr ? (review['github_username'] + " has approved this PR") : "you have approved this PR";
+          tooltip = my_review ? "you have approved this PR": (review['github_username'] + " has approved this PR");
     }
     row += ''+
       '<span class="tooltipped tooltipped-e" aria-label="'+ tooltip +'">'+

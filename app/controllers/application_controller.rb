@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  after_action :allow_iframe
+
   private
 
   def current_user
@@ -18,5 +20,9 @@ class ApplicationController < ActionController::Base
 
   def logout
     session.delete(:user_id)
+  end
+
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
   end
 end

@@ -1,5 +1,14 @@
-<h1><%= @user.github_username %></h1>
+<script type="text/javascript">
+  // step 1: the chrome extension opens /auth/github, which redirects
+  // back here. window.close() only works in that case because it was
+  // opened by js.
+  <% if @user.secret %> window.close(); <% end %>
 
-secret: <pre><%= @user.secret %></pre>
-
-<%= link_to 'logout', logout_path %>
+  // step 2: when github directed back here, a new session was created
+  // the chrome extension opens an iframe in step 2 and receives the
+  // following message.
+  parent.postMessage({
+    "github_username" : "<%= @user.github_username %>",
+    "user_secret" : "<%= @user.secret %>"
+  } ,'*'); // todo : make sure only the chrome extension is allowed here.
+</script>
