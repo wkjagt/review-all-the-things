@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def user_log
-    return head :forbidden unless params["application-secret"] == current_user.secret
+    return head :forbidden unless current_user
     render json: current_user.feed
   end
 

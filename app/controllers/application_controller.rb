@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-
     if user_id = session[:user_id]
       @current_user ||= GithubUser.find_by(id: user_id)
     elsif params["application-secret"] && params["user"]

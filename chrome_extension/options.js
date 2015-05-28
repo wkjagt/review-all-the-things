@@ -1,5 +1,5 @@
 // step 1: open link that redirects to
-var loggin_window = window.open('https://willem.ngrok.io/auth/github', '_blank');
+var loggin_window = window.open('https://review-all-the-things.herokuapp.com/auth/github', '_blank');
 loggin_window.focus();
 
 // step 2: setup a listener for when the iframe is added to the body. The opened
@@ -14,6 +14,6 @@ window.addEventListener('message', function(evt){
 var timer = setInterval(function() {
   if (loggin_window.closed) {
     clearInterval(timer);
-    $('body').append('<iframe src="https://willem.ngrok.io/user"></iframe>')
+    $('body').append('<iframe src="https://review-all-the-things.herokuapp.com/user"></iframe>')
   }
 }, 500);

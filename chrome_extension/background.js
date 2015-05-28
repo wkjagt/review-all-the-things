@@ -7,9 +7,8 @@ var onMsg = function(msg, sender, sendResponse)
 }
 
 var getPullRequests = function(callback) {
-
   $.ajax({
-    url: 'https://willem.ngrok.io/users/'+localStorage['github-username'],
+    url: 'https://review-all-the-things.herokuapp.com/users/'+localStorage['github-username'],
     method: 'GET',
     data: {
       'application-secret' : localStorage['application-secret']
@@ -24,7 +23,6 @@ var getPullRequests = function(callback) {
     error : function(error) {
       chrome.browserAction.setBadgeBackgroundColor({color:[200, 0, 0, 100]});
       chrome.browserAction.setBadgeText({text: '?'});
-      console.log(error);
     },
     async : false
   });
@@ -32,4 +30,4 @@ var getPullRequests = function(callback) {
 
 chrome.runtime.onMessage.addListener(onMsg);
 getPullRequests();
-setInterval( getPullRequests, 60000 );
+setInterval( getPullRequests, 5 * 60 * 1000 );
