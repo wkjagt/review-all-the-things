@@ -1,19 +1,7 @@
 var link = $('<a id="code-reviews-tab" class="js-selected-navigation-item subnav-item" href="#">Code Reviews</a>');
 
 function table_header() {
-  return ''+
-    '<div class="table-list-filters">'+
-    '    <div class="table-list-header-toggle states left">'+
-    '        <a href="#" class="btn-link selected pr-selector">'+
-    '          <span class="octicon octicon-microscope"></span>'+
-    '          To review'+
-    '        </a>'+
-    '        <a href="#" class="btn-link pr-selector">'+
-    '          <span class="octicon octicon-git-pull-request"></span>'+
-    '          My unmerged PRs'+
-    '        </a>'+
-    '    </div>'+
-    '</div>';
+  return template('table_header.html');
 }
 
 function pr_row(pr, user_name) {
@@ -89,3 +77,18 @@ $(".subnav-links").click(function(e){e.stopPropagation()}).append(link);
 if(window.location.hash == "#code-reviews") {
   link.click();
 }
+
+
+function template(template_url, variables = {}) {
+  var content;
+  $.ajax({
+      url: chrome.extension.getURL(template_url),
+      async: false,
+      success: function(data) {
+        content = data;
+      }
+  });
+  return content;
+}
+
+chrome.extension.getURL('code_review_tab.html')
