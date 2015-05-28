@@ -4,10 +4,7 @@ class UsersController < ApplicationController
   respond_to :json, :html
 
   def show
-    @user = current_user
-
-    return head :not_found unless @user
-    return redirect_to '/auth/github' unless current_user
+    return redirect_to '/' unless @user = current_user
   end
 
   def user_log
