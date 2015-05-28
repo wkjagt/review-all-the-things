@@ -16,11 +16,12 @@
       "js" : [
         "js/lib/jquery.js",
         "js/lib/jquery.timeago.js",
+        "js/lib/underscore.js",
         "js/contentscript.js"
       ],
       "all_frames" : false
     }
   ],
   "permissions": ["activeTab"],
-  "web_accessible_resources": ["table_header.html"]
+  "web_accessible_resources": ["table_header.html", "pr_row.html"]
 }

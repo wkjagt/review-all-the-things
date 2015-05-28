@@ -1,13 +1,15 @@
 var link = $('<a id="code-reviews-tab" class="js-selected-navigation-item subnav-item" href="#">Code Reviews</a>');
 
 function table_header() {
-  return template('table_header.html');
+  return render('table_header.html');
 }
 
 function pr_row(pr, user_name) {
-  var my_pr = user_name == pr['github_user']['github_username'];
 
-  row = ''+
+  var my_pr = user_name == pr['github_user']['github_username'];
+  return render('pr_row.html', { "pr" : pr, "user_name" : user_name, "my_pr" : my_pr });
+
+  return ''+
   '<li class="table-list-item pr-row" '+ (my_pr ? 'style="display:none"' : '')+'>'+
   '  <div class="table-list-cell table-list-cell-type"></div>'+
   '  <div class="table-list-cell issue-title">'+
@@ -43,6 +45,7 @@ function pr_row(pr, user_name) {
   '  <div></div>'+
   '  <div class="table-list-cell issue-comments"><a></a></div>'+
   '</li>';
+
 }
 
 link.click(function(e){
@@ -79,7 +82,7 @@ if(window.location.hash == "#code-reviews") {
 }
 
 
-function template(template_url, variables = {}) {
+function render(template_url, variables) {
   var content;
   $.ajax({
       url: chrome.extension.getURL(template_url),
@@ -88,7 +91,6 @@ function template(template_url, variables = {}) {
         content = data;
       }
   });
-  return content;
-}
 
-chrome.extension.getURL('code_review_tab.html')
+  return _.template(content)(variables);
+}
