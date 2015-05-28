@@ -1,9 +1,8 @@
 {
   "manifest_version": 2,
-
-  "name": "Code review reminder",
-  "description": "Code review reminder",
-  "version": "0.0.1",
+  "name": "LGTM",
+  "description": "This adds a new tab on https://github.com/pulls with the status of pull requests you need to do.",
+  "version": "0.0.2",
   "options_page" : "options.html",
   "background": {
     "scripts": [
@@ -13,10 +12,7 @@
   },
   "content_scripts" : [
     {
-      "matches" : [
-        "http://*/*",
-        "https://*/*"
-      ],
+      "matches" : ["https://github.com/pulls/*"],
       "js" : [
         "js/lib/jquery.js",
         "js/lib/jquery.timeago.js",
@@ -25,6 +21,5 @@
       "all_frames" : false
     }
   ],
-  "permissions": [ "activeTab", "https://ajax.googleapis.com/" ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "permissions": ["activeTab"]
 }
