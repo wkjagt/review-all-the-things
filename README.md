@@ -63,6 +63,7 @@ Go into your repository's settings and click *Webhooks & Services*. In the *Webh
 - *Secret* : Choose a strong secret, use the same as used in the `GITHUB_WEBHOOK_SECRET` env variable in your Rails application.
 - *Which events...?* : Select *Let me select individual events.* and only select *Pull Request* and *Issue Comment* (GitHub treats pull requests as issues, and comments on a pull request trigger an issue comment webhook.)
 
+![image](https://cloud.githubusercontent.com/assets/327048/7997444/48e76a28-0afb-11e5-894a-6e4080bdc9d2.png)
 
 #### Setup the Chrome extension
 Install the Chrome extension from the `chrome_extension` folder in this repository. On the extensions page, click *options*. The rest should be automatic.
