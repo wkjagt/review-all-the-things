@@ -35,7 +35,8 @@ If the owner of the pull request comments, it is parsed - again - for mentions o
 
 ### The Chrome extension
 
-The Chrome extension is a simple polling application that pings the Rails app every minute to get the list of pull requests I have to review.
+The Chrome extension connects to the Rails app using an application secret that is created for the user.
+![image](https://cloud.githubusercontent.com/assets/327048/7997403/8959e460-0afa-11e5-9fe1-3930f588eaa3.png)
 
 ### Installation
 
@@ -60,4 +61,4 @@ Go into your repository's settings and click *Webhooks & Services*. In the *Webh
 
 
 #### Setup the Chrome extension
-Install the Chrome extension from the `chrome_extension` folder in this repository. Richt click on the icon and click options. Fill in the details. It will ask you for a secret. This is **NOT** the secret you used for the GitHub webhooks, but your personal secret which can be obtained from the Rails application which you installed in step 2. Visit the front page and click 'login with GitHub'.
+Install the Chrome extension from the `chrome_extension` folder in this repository. On the extensions page, click *options*. The rest should be automatic.
