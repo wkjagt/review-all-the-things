@@ -36,6 +36,10 @@ If the owner of the pull request comments, it is parsed - again - for mentions o
 ### The Chrome extension
 
 The Chrome extension connects to the Rails app using an application secret that is created for the user.
+
+--
+
+
 ![image](https://cloud.githubusercontent.com/assets/327048/7997403/8959e460-0afa-11e5-9fe1-3930f588eaa3.png)
 
 ### Installation
